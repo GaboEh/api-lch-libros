@@ -7,12 +7,12 @@ const app = express();
 
 //variables
 const PORT = process.env.PORT || 3050;
-const DB_HOST = process.env.DB_HOST || 'localhost';
-const DB_USER = process.env.DB_USER || 'root';
-const DB_PASSWORD = process.env.DB_PASSWORD || 'password';
-const DB_NAME = process.env.DB_NAME || 'dblch';
-const DB_PORT = process.env.DB_PORT || 3306;
-const whiteList = ['http://localhost:4200', 'http://localhost:3000'];
+const DB_HOST = process.env.DB_HOST;
+const DB_USER = process.env.DB_USER;
+const DB_PASSWORD = process.env.DB_PASSWORD;
+const DB_NAME = process.env.DB_NAME;
+const DB_PORT = process.env.DB_POR;
+const whiteList = ['http://localhost:4200', 'http://localhost:3000', 'https://railway-production-6d4e.up.railway.app/'];
 
 app.use(bodyParser.json());
 app.use(cors({
@@ -21,11 +21,11 @@ app.use(cors({
 
 //Mysql
 const connection = mysql.createConnection({
-    host: DB_HOST,
-    user: DB_USER,
-    password: DB_PASSWORD,
-    database: DB_NAME,
-    port: DB_PORT
+    host: DB_HOST || 'containers.railway.app',
+    user: DB_USER || 'root',
+    password: DB_PASSWORD || 'bWOrGEveGMsXhtx0EjYu',
+    database: DB_NAME || 'railway',
+    port: DB_PORT || '7718'
 });
 
 //route
@@ -35,17 +35,22 @@ app.get('/', (req, res) => {
 });
 
 
-//all customers
+//all books
 app.get('/libros', (req, res) => {
-    const sql = 'select * from libros';
+    const sql = 'SELECT * FROM libros';
 
     connection.query(sql, (error, results) => {
-        if (error) throw error;
-        if(results.length > 0){
-            res.json(results);
-        }else {
-            res.json('Not result');
-        }
+    if (error) {
+        console.error('Error en la consulta:', error);
+        res.status(500).json({ error: 'Error en la consulta' });
+        return;
+    }
+        if (results.length === 0) {
+        res.status(404).json({ message: 'No se encontraron resultados' });
+        return;
+    }
+
+    res.json(results);
     });
 });
 
