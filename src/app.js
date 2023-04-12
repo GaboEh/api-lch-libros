@@ -7,11 +7,11 @@ const app = express();
 
 //variables
 const PORT = process.env.PORT || 3050;
-const DB_HOST = process.env.DB_HOST;
-const DB_USER = process.env.DB_USER;
-const DB_PASSWORD = process.env.DB_PASSWORD;
-const DB_NAME = process.env.DB_NAME;
-const DB_PORT = process.env.DB_POR;
+const DB_HOST = process.env.DB_HOST || 'localhost';
+const DB_USER = process.env.DB_USER || 'root';
+const DB_PASSWORD = process.env.DB_PASSWORD || 'password';
+const DB_NAME = process.env.DB_NAME || 'dblch';
+const DB_PORT = process.env.DB_PORT || 3306;
 const whiteList = ['http://localhost:4200', 'http://localhost:3000', 'https://railway-production-6d4e.up.railway.app/'];
 
 app.use(bodyParser.json());
@@ -19,13 +19,15 @@ app.use(cors({
     origin: whiteList
 }));
 
+
+
 //Mysql
 const connection = mysql.createConnection({
-    host: DB_HOST || 'containers.railway.app',
-    user: DB_USER || 'root',
-    password: DB_PASSWORD || 'bWOrGEveGMsXhtx0EjYu',
-    database: DB_NAME || 'railway',
-    port: DB_PORT || '7718'
+    host: DB_HOST,
+    user: DB_USER,
+    password: DB_PASSWORD,
+    database: DB_NAME,
+    port: DB_PORT 
 });
 
 //route
@@ -55,28 +57,40 @@ app.get('/libros', (req, res) => {
 });
 
 app.get('/autores', (req, res) => {
-    const sql = 'select * from autores';
+    const sql = 'SELECT * FROM autores';
 
     connection.query(sql, (error, results) => {
-        if (error) throw error;
-        if(results.length > 0){
-            res.json(results);
-        }else {
-            res.json('Not result');
-        }
+    if (error) {
+        console.error('Error en la consulta:', error);
+        res.status(500).json({ error: 'Error en la consulta' });
+        return;
+    }
+
+    if (results.length === 0) {
+        res.status(404).json({ message: 'No se encontraron resultados' });
+        return;
+    }
+
+    res.json(results);
     });
 });
 
 app.get('/tipos', (req, res) => {
-    const sql = 'select * from tipos';
+  const sql = 'SELECT * FROM tipos';
 
-    connection.query(sql, (error, results) => {
-        if (error) throw error;
-        if(results.length > 0){
-            res.json(results);
-        }else {
-            res.json('Not result');
-        }
+connection.query(sql, (error, results) => {
+    if (error) {
+    console.error('Error en la consulta:', error);
+    res.status(500).json({ error: 'Error en la consulta' });
+    return;
+    }
+
+    if (results.length === 0) {
+    res.status(404).json({ message: 'No se encontraron resultados' });
+    return;
+    }
+
+    res.json(results);
     });
 });
 
@@ -123,6 +137,21 @@ app.delete('/libros:id', (req, res)=> {
 connection.connect(error => {
     if (error) throw error;
     console.log('database server running!');
+});
+
+// Middleware de error 404
+app.use((req, res, next) => {
+    res.status(404).json({
+    message: "No se encontró la ruta solicitada"
+    });
+});
+
+  // Middleware de error 500
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).json({
+    message: "Ha ocurrido un error en el servidor"
+    });
 });
 
 app.listen(PORT, () => 
