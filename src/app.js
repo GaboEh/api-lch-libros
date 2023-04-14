@@ -56,6 +56,42 @@ app.get('/libros', (req, res) => {
     });
 });
 
+app.get('/libros', (req, res) => {
+    const sql = 'SELECT libros.*, editores.editor AS editorial FROM libros INNER JOIN editores ON libros.editor = editores.id;';
+
+    connection.query(sql, (error, results) => {
+    if (error) {
+        console.error('Error en la consulta:', error);
+        res.status(500).json({ error: 'Error en la consulta' });
+        return;
+    }
+        if (results.length === 0) {
+        res.status(404).json({ message: 'No se encontraron resultados' });
+        return;
+    }
+
+    res.json(results);
+    });
+});
+
+app.get('/libros', (req, res) => {
+    const sql = 'SELECT libros.*, lugares.lugar AS lugares FROM libros INNER JOIN lugares ON libros.lugar = lugares.id;';
+
+    connection.query(sql, (error, results) => {
+    if (error) {
+        console.error('Error en la consulta:', error);
+        res.status(500).json({ error: 'Error en la consulta' });
+        return;
+    }
+        if (results.length === 0) {
+        res.status(404).json({ message: 'No se encontraron resultados' });
+        return;
+    }
+
+    res.json(results);
+    });
+});
+
 app.get('/autores', (req, res) => {
     const sql = 'SELECT * FROM autores';
 
