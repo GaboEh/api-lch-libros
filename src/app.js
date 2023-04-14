@@ -92,6 +92,24 @@ app.get('/libros', (req, res) => {
     });
 });
 
+app.get('/libros', (req, res) => {
+    const sql = 'SELECT libros.*, paises.pais AS paises FROM libros INNER JOIN paises ON libros.pais = paises.id;';
+
+    connection.query(sql, (error, results) => {
+    if (error) {
+        console.error('Error en la consulta:', error);
+        res.status(500).json({ error: 'Error en la consulta' });
+        return;
+    }
+        if (results.length === 0) {
+        res.status(404).json({ message: 'No se encontraron resultados' });
+        return;
+    }
+
+    res.json(results);
+    });
+});
+
 app.get('/autores', (req, res) => {
     const sql = 'SELECT * FROM autores';
 
