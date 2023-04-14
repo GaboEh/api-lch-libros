@@ -39,7 +39,7 @@ app.get('/', (req, res) => {
 
 //all books
 app.get('/libros', (req, res) => {
-    const sql = 'SELECT * FROM libros';
+    const sql = 'SELECT libros.*, autores.nombre AS nombre_autor FROM libros INNER JOIN autores ON libros.autor = autores.id;';
 
     connection.query(sql, (error, results) => {
     if (error) {
