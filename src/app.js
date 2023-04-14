@@ -124,9 +124,9 @@ app.post('/libros', (req, res)=> {
     res.send('New book');
 });
 
-app.put('/libros:id', (req, res)=> {
-    res.send('update books');
-});
+// app.put('/libros:id', (req, res)=> {
+//     res.send('update books');
+// });
 
 app.delete('/libros:id', (req, res)=> {
     res.send('Delete book');
