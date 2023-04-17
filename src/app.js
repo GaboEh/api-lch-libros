@@ -56,6 +56,27 @@ app.get('/libros', (req, res) => {
     });
 });
 
+app.get('/libros/titulo/:titulo', (req, res) => {
+    const { titulo } = req.params;
+    const sql = `SELECT libros.*, autores.nombre AS nombre_autor, editores.editor AS editorial, lugares.lugar AS lugares FROM libros INNER JOIN autores ON libros.autor = autores.id INNER JOIN editores ON libros.editor = editores.id INNER JOIN lugares ON libros.lugar = lugares.id WHERE libros.titulo LIKE '%${titulo}%'`;
+
+    connection.query(sql, (error, results) => {
+        if (error) {
+        console.error('Error en la consulta:', error);
+        res.status(500).json({ error: 'Error en la consulta' });
+        return;
+    }
+
+    if (results.length === 0) {
+        res.status(404).json({ message: 'No se encontraron resultados' });
+        return;
+    }
+
+    res.json(results);
+    });
+});
+
+
 
 app.get('/autores', (req, res) => {
     const sql = 'SELECT * FROM autores';
