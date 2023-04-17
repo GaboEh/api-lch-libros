@@ -121,6 +121,19 @@ app.get('/libros/pais:pais', (req,res) =>{
     });
 });
 
+app.get('/consulta', (req, res) => {
+    const consulta = req.query.q; // Obtener la consulta SQL de la URL
+    connection.query(consulta, (error, results) => {
+        if (error) {
+            console.error('Error en la consulta:', error);
+            res.status(500).json({ error: 'Error en la consulta' });
+        return;
+    }
+    res.json(results);
+    });
+});
+
+
 app.post('/libros', (req, res)=> {
     res.send('New book');
 });
