@@ -33,7 +33,7 @@ const connection = mysql.createConnection({
 //route
 const router = express.Router();
 app.get('/', (req, res) => {
-    res.send('Hola desde Railway!');
+    res.send('Bienvenido a la api de Biblioteca, Creado por GaboEh');
 });
 
 
