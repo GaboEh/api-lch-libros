@@ -31,7 +31,7 @@ const connection = mysql.createConnection({
 });
 
 //route
-// const router = express.Router();
+const router = express.Router();
 // app.get('/', (req, res) => {
 //     res.send('Bienvenido a la api de Biblioteca, Creado por GaboEh');
 // });
