@@ -31,14 +31,14 @@ const connection = mysql.createConnection({
 });
 
 //route
-const router = express.Router();
-app.get('/', (req, res) => {
-    res.send('Bienvenido a la api de Biblioteca, Creado por GaboEh');
-});
+// const router = express.Router();
+// app.get('/', (req, res) => {
+//     res.send('Bienvenido a la api de Biblioteca, Creado por GaboEh');
+// });
 
 
 //all books
-app.get('/libros', (req, res) => {
+app.get('/', (req, res) => {
     const sql = 'SELECT libros.*, autores.nombre AS nombre_autor, editores.editor AS editorial, lugares.lugar AS lugares, paises.pais AS paises, idiomas.idioma AS idiomas, tipos.tipo AS tipos FROM libros INNER JOIN autores ON libros.autor = autores.id INNER JOIN editores ON libros.editor = editores.id INNER JOIN lugares ON libros.lugar = lugares.id INNER JOIN paises ON libros.pais = paises.id INNER JOIN idiomas ON libros.idioma = idiomas.id INNER JOIN tipos ON libros.tipo = tipos.id;';
 
     connection.query(sql, (error, results) => {
