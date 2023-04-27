@@ -12,7 +12,7 @@ const DB_USER = process.env.DB_USER || 'root';
 const DB_PASSWORD = process.env.DB_PASSWORD || 'password';
 const DB_NAME = process.env.DB_NAME || 'dblch';
 const DB_PORT = process.env.DB_PORT || 3306;
-const whiteList = ['http://localhost:4200', 'http://localhost:3000', 'https://railway-production-6d4e.up.railway.app/'];
+const whiteList = ['http://localhost:4200', 'http://localhost:3000', 'https://railway-production-6d4e.up.railway.app/', 'GaboEh.github.io'];
 
 app.use(bodyParser.json());
 app.use(cors({
