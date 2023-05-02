@@ -6,13 +6,17 @@ const cors = require('cors');
 const app = express();
 
 //variables
-const PORT = process.env.PORT || 3050
+const PORT = process.env.PORT || 3050;
 const DB_HOST = process.env.DB_HOST || 'localhost';
 const DB_USER = process.env.DB_USER || 'root';
 const DB_PASSWORD = process.env.DB_PASSWORD || 'password';
 const DB_NAME = process.env.DB_NAME || 'dblch';
 const DB_PORT = process.env.DB_PORT || 3306;
+<<<<<<< HEAD
 const whiteList = ['http://localhost:4200', 'http://localhost:3000', 'https://railway-production-6d4e.up.railway.app/', 'https://biblioteca-lch-app.netlify.app/'];
+=======
+const whiteList = ['http://localhost:4200', 'http://localhost:3000', 'https://railway-production-6d4e.up.railway.app/', 'GaboEh.github.io'];
+>>>>>>> 69823aeafa13370099ee9635b37418fd61247431
 
 app.use(bodyParser.json());
 app.use(cors({
@@ -33,13 +37,13 @@ const connection = mysql.createConnection({
 //route
 const router = express.Router();
 app.get('/', (req, res) => {
-    res.send('Bienvenido a la api de Biblioteca, Creado por GaboEh');
+   res.send('Bienvenido a la api de Biblioteca, Creado por GaboEh');
 });
 
 
 //all books
 app.get('/libros', (req, res) => {
-    const sql = 'SELECT libros.*, autores.nombre AS nombre_autor, editores.editor AS editorial, lugares.lugar AS lugares, paises.pais AS paises, idiomas.idioma AS idiomas, tipos.tipo AS tipos FROM libros INNER JOIN autores ON libros.autor = autores.id INNER JOIN editores ON libros.editor = editores.id INNER JOIN lugares ON libros.lugar = lugares.id INNER JOIN paises ON libros.pais = paises.id INNER JOIN idiomas ON libros.idioma = idiomas.id INNER JOIN tipos ON tipos.tipo = tipos.id;';
+    const sql = 'SELECT libros.*, autores.nombre AS nombre_autor, editores.editor AS editorial, lugares.lugar AS lugares, paises.pais AS paises, idiomas.idioma AS idiomas, tipos.tipo AS tipos FROM libros INNER JOIN autores ON libros.autor = autores.id INNER JOIN editores ON libros.editor = editores.id INNER JOIN lugares ON libros.lugar = lugares.id INNER JOIN paises ON libros.pais = paises.id INNER JOIN idiomas ON libros.idioma = idiomas.id INNER JOIN tipos ON libros.tipo = tipos.id;';
 
     connection.query(sql, (error, results) => {
     if (error) {
