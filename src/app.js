@@ -6,7 +6,7 @@ const cors = require('cors');
 const app = express();
 
 const corsOptions = {
-    origin: ('https://superb-treacle-a79971.netlify.app', 'http://localhost:4200'),
+    origin: ['https://superb-treacle-a79971.netlify.app', 'http://localhost:4200'],
     optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
 app.use(bodyParser.json());
