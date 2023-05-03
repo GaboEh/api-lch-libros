@@ -5,6 +5,13 @@ const serverless = require('serverless-http');
 const cors = require('cors');
 const app = express();
 
+const corsOptions = {
+    origin: ('https://superb-treacle-a79971.netlify.app', 'http://localhost:4200'),
+    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}
+app.use(bodyParser.json());
+app.use(cors(corsOptions));
+
 //variables
 const PORT = process.env.PORT || 3050;
 const DB_HOST = process.env.DB_HOST || 'localhost';
@@ -12,15 +19,6 @@ const DB_USER = process.env.DB_USER || 'root';
 const DB_PASSWORD = process.env.DB_PASSWORD || 'password';
 const DB_NAME = process.env.DB_NAME || 'dblch';
 const DB_PORT = process.env.DB_PORT || 3306;
-const whiteList = ['http://localhost:4200', 'http://localhost:3000', 'https://railway-production-6d4e.up.railway.app/', 'https://biblioteca-lch-app.netlify.app/'];
-
-
-app.use(bodyParser.json());
-app.use(cors({
-    origin: whiteList
-}));
-
-
 
 //Mysql
 const connection = mysql.createConnection({
