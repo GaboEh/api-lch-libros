@@ -30,14 +30,6 @@ const connection = mysql.createConnection({
     port: DB_PORT 
 });
 
-connection.connect(function (err) {
-    if (err) {
-        console.log(`connectionRequest Failed ${err.stack}`)
-    } else {
-        console.log(`DB connectionRequest Successful ${connection.threadId}`)
-    }
-});
-
 //return connection object
 return connection
 
@@ -180,9 +172,12 @@ app.delete('/libros:id', (req, res)=> {
 
 
 // Check connect
-connection.connect(error => {
-    if (error) throw error;
-    console.log('database server running!');
+connection.connect(function (err) {
+    if (err) {
+        console.log(`connectionRequest Failed ${err.stack}`)
+    } else {
+        console.log(`DB connectionRequest Successful ${connection.threadId}`)
+    }
 });
 
 // Middleware de error 404
