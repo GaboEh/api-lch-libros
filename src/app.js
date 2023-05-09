@@ -5,6 +5,7 @@ const serverless = require('serverless-http');
 const cors = require('cors');
 const app = express();
 
+
 const corsOptions = {
     origin: ['https://bibliotecalch.netlify.app', 'http://localhost:4200'],
     optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
@@ -29,10 +30,21 @@ const connection = mysql.createConnection({
     port: DB_PORT 
 });
 
+connection.connect(function (err) {
+    if (err) {
+        console.log(`connectionRequest Failed ${err.stack}`)
+    } else {
+        console.log(`DB connectionRequest Successful ${connection.threadId}`)
+    }
+});
+
+//return connection object
+return connection
+
 //route
 const router = express.Router();
 app.get('/', (req, res) => {
-   res.send('Bienvenido a la api de Biblioteca, Creado por GaboEh');
+    res.send('Bienvenido a la api de Biblioteca, Creado por GaboEh');
 });
 
 
