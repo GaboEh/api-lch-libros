@@ -5,7 +5,6 @@ const serverless = require('serverless-http');
 const cors = require('cors');
 const app = express();
 
-
 const corsOptions = {
     origin: ['https://bibliotecalch.netlify.app', 'http://localhost:4200'],
     optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
@@ -14,7 +13,7 @@ app.use(bodyParser.json());
 app.use(cors(corsOptions));
 
 //variables
-const PORT = process.env.PORT || 3050
+const PORT = process.env.PORT || 3050;
 const DB_HOST = process.env.DB_HOST || 'localhost';
 const DB_USER = process.env.DB_USER || 'root';
 const DB_PASSWORD = process.env.DB_PASSWORD || 'password';
@@ -29,9 +28,6 @@ const connection = mysql.createConnection({
     database: DB_NAME,
     port: DB_PORT 
 });
-
-//return connection object
-return connection
 
 //route
 const router = express.Router();
@@ -171,14 +167,40 @@ app.delete('/libros:id', (req, res)=> {
 });
 
 
-// Check connect
-connection.connect(function (err) {
-    if (err) {
-        console.log(`connectionRequest Failed ${err.stack}`)
-    } else {
-        console.log(`DB connectionRequest Successful ${connection.threadId}`)
-    }
-});
+    //Instantiate the connection
+    connection.connect(function (err) {
+        if (err) {
+            console.log(`connectionRequest Failed ${err.stack}`)
+        } else {
+            console.log(`DB connectionRequest Successful ${connection.threadId}`)
+        }
+    });
+
+
+
+controllerMethod: (req, res, next) => {
+    //Establish the connection on this request
+    connection = connectionRequest()
+
+    //Run the query
+    connection.query("SELECT * FROM table", function (err, result, fields) {
+        if (err) {
+            // If an error occurred, send a generic server failure
+            console.log(`not successful! ${err}`)
+            connection.destroy();
+
+        } else {
+            //If successful, inform as such
+            console.log(`Query was successful, ${result}`)
+
+            //send json file to end user if using an API
+            res.json(result)
+
+            //destroy the connection thread
+            connection.destroy();
+        }
+    });
+}
 
 // Middleware de error 404
 app.use((req, res, next) => {
@@ -198,4 +220,9 @@ app.use((err, req, res, next) => {
 app.listen(PORT, () => 
 console.log(`Server running on port ${PORT}`));
 
+
+
 module.exports.handler = serverless(app);
+
+//return connection object
+return connection
