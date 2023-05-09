@@ -14,7 +14,7 @@ app.use(bodyParser.json());
 app.use(cors(corsOptions));
 
 //variables
-const PORT = process.env.PORT || 3050;
+const PORT = process.env.PORT || 3050
 const DB_HOST = process.env.DB_HOST || 'localhost';
 const DB_USER = process.env.DB_USER || 'root';
 const DB_PASSWORD = process.env.DB_PASSWORD || 'password';
