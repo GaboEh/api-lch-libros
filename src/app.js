@@ -29,11 +29,12 @@ const connection = mysql.createConnection({
     port: DB_PORT 
 });
 
-//route
+  // Route
 const router = express.Router();
 app.get('/', (req, res) => {
-    res.send('Bienvenido a la api de Biblioteca, Creado por GaboEh');
+    res.send('Bienvenido a la API de Biblioteca, Creado por GaboEh');
 });
+
 
 
 //all books
@@ -202,27 +203,35 @@ controllerMethod: (req, res, next) => {
     });
 }
 
-// Middleware de error 404
-app.use((req, res, next) => {
-    res.status(404).json({
-    message: "No se encontró la ruta solicitada"
-    });
-});
-
-  // Middleware de error 500
+// Middleware de error 500
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).json({
-    message: "Ha ocurrido un error en el servidor"
+        message: "Ha ocurrido un error en el servidor"
+    });
+});
+  // Rutas de libros y consultas de SQL (omitidas por brevedad)
+  // Middleware de error 404
+app.use((req, res, next) => {
+    res.status(404).json({
+        message: "No se encontró la ruta solicitada"
     });
 });
 
-app.listen(PORT, () => 
-console.log(`Server running on port ${PORT}`));
+  // Establecer conexión a la base de datos
+connection.connect(function (err) {
+    if (err) {
+        console.log(`connectionRequest Failed ${err.stack}`)
+    } else {
+        console.log(`DB connectionRequest Successful ${connection.threadId}`)
+    }
+});
 
-
+app.listen(PORT, () =>
+    console.log(`Server running on port ${PORT}`)
+);
 
 module.exports.handler = serverless(app);
 
-//return connection object
-return connection
+  // Devolver objeto de conexión
+return connection;
