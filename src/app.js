@@ -110,7 +110,7 @@ router.get('/libros/titulo/:titulo', (req, res) => {
 
 // Resto de las rutas...
 
-app.use('/api', router);
+app.use(router);
 
 // Middleware de error 500
 app.use((err, req, res, next) => {
