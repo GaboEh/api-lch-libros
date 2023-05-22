@@ -6,6 +6,8 @@ const cors = require('cors');
 const app = express();
 const corsOptions = {
   origin: ['https://bibliotecalch.netlify.app', 'http://localhost:4200'],
+  methods: 'GET, POST, PUT, DELETE',
+  allowedHeaders: 'Content-Type, Authorization',
   optionsSuccessStatus: 200
 };
 
