@@ -1,4 +1,5 @@
-const bodyParser = require('body-parser');
+const mysql = require('mysql2');
+const express = require('express');
 const serverless = require('serverless-http');
 const cors = require('cors');
 
@@ -8,7 +9,7 @@ const corsOptions = {
   optionsSuccessStatus: 200
 };
 
-app.use(bodyParser.json());
+app.use(express.json());
 app.use(cors(corsOptions));
 
 const PORT = process.env.PORT || 3050;
