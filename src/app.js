@@ -1,5 +1,4 @@
-const mysql = require('mysql2');
-const express = require('express');
+const bodyParser = require('body-parser');
 const serverless = require('serverless-http');
 const cors = require('cors');
 
@@ -9,7 +8,7 @@ const corsOptions = {
   optionsSuccessStatus: 200
 };
 
-app.use(express.json());
+app.use(bodyParser.json());
 app.use(cors(corsOptions));
 
 const PORT = process.env.PORT || 3050;
@@ -108,7 +107,8 @@ router.get('/libros/titulo/:titulo', (req, res) => {
 });
 
 // Resto de las rutas...
-app.use(router);
+
+app.use('/api', router);
 
 // Middleware de error 500
 app.use((err, req, res, next) => {
